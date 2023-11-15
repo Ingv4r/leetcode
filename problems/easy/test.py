@@ -24,4 +24,3 @@ def sort_square(array):
     return res
 
 
-print(sort_square([1, 1, 2]))
