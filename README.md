@@ -1,2 +1,2 @@
 # leetcode
-I solve problems with leetcode
+Solving problems on leetcode.
