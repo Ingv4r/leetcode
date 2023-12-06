@@ -5,14 +5,24 @@ class TreeNode:
         self.right = right
 
 
-def make_tree(node):
-    i = 0
-    if i < len(nodes):
+def make_tree(i, nodes):
+    if i <= nodes:
         return TreeNode(
             i,
-            left=make_tree(i * 2),
-            right=make_tree((i * 2) + 1)
+            left=make_tree(i * 2, nodes),
+            right=make_tree((i * 2) + 1, nodes)
         )
+
+
+def preorder(node):
+    if node is None:
+        return
+    yield node.val
+    for v in preorder(node.left):
+        yield v
+    for v in preorder(node.right):
+        yield v
+
 
 def read_file():
     with open('input_tree.txt', 'r') as file:
@@ -23,9 +33,10 @@ def read_file():
 
 def main():
     nodes, changes, arr = read_file()
-    nodes = [i + 1 for i in range(nodes)]
-    make_tree(nodes)
-    print(nodes, changes, arr)
+    root = make_tree(1, nodes)
+    nodes = list(preorder(root))
+
+
 
 
 if __name__ == '__main__':

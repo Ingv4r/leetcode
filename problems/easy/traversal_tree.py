@@ -1,38 +1,48 @@
-
-
-
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
 
+    def __str__(self):
+        left_val = self.left.val if self.left else None
+        right_val = self.right.val if self.right else None
+        return f"({self.val}, left={left_val}, right={right_val}) "
 
 class Solution:
     def inorderTraversal(self, root: TreeNode | None) -> list[int]:
-        if not root:
-            return []
-        left_res = []
-        right_res = []
-        prev_root = None
-        while root.right or root.left:
-            prev_root = root
-            if root.right:
-                left_res.append(root.val)
-                root = root.right
-            elif root.left:
-                right_res.append(root.val)
+        st = []
+        res = []
+
+        while root or st:
+            while root:
+                st.append(root)
                 root = root.left
-        if prev_root.left:
-            left_res.append(root.val)
-        elif prev_root.right:
-            right_res.append(root.val)
-        res = left_res + right_res
+
+            root = st.pop()
+            res.append(root.val)
+
+            root = root.right
+
         return res
 
+def make_tree():
+    data = [2, 3, None, 1]
+    root = TreeNode(data[0])
+    res = [root]
+    for i in range(len(data) - 2):
+        res[i].left = TreeNode(data[i + 1])
+        res[i].right = TreeNode(data[i + 2])
+        if data[i+1]:
+            root = res[i].left
+        elif data[i+2]:
+            root = res[i].right
+        res.append(root)
+    res[-1].val = data[-1]
+    return res[0]
 
-node3 = TreeNode(3)
-node2 = TreeNode(2, left=node3)
-node1 = TreeNode(1, right=node2)
 
-print(Solution().inorderTraversal(node1))
+root3 = TreeNode(3)
+root2 = TreeNode(2, left=root3)
+root1 = TreeNode(1, right=root2)
+print(Solution().inorderTraversal(root1))
